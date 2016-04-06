@@ -114,14 +114,43 @@ var um = {
 	   		}
 	   }
   	});
-
-
   },
 
-  
+   isRemovePossible: function (status, cb) {
+    if(status === 0) {
+      cb();
+    }
+    var keys = {
+      status: status
+    };
+    var options = {
+      selectFields: ['id', 'email']
+    };
+    um.remove(keys, options, function (err, res) {
+       cb(err, res && res.length);
+    });
+  },
   
   remove: function removefn(data, cb) {
-   
+    um.isRemovePossible(data.status, function(err) {
+       if (!err) {
+   			console.log('present in db');
+   			var inactive_user={};
+   			if(data.email){
+   			inactive_user.status= data.status;
+   			inactive_user.updated_at= new Date();
+   			var query= um.table.update(inactive_user).where(um.table.email.equals(data.email));
+   			query.exec(function(err, res){
+   			console.log(err||res);
+   			if(res){
+   			inactive_user.id= res.insertId;
+   			}
+   			cb(err, inactive_user);
+   	  	});
+   		}
+	   }
+  	});
+  }
 };
 
 module.exports = um;

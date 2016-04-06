@@ -3,3 +3,8 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  form(name="login-page", method="post")
+            label Username
+            input(type="text", name="uname", placeholder="username")
+            input(type="text", name="pass", placeholder="password")
+            button(type="submit") Sign In
