@@ -132,24 +132,29 @@ var um = {
   },
   
   remove: function removefn(data, cb) {
-    um.isRemovePossible(data.status, function(err) {
-       if (!err) {
-   			console.log('present in db');
-   			var inactive_user={};
-   			if(data.email){
-   			inactive_user.status= data.status;
-   			inactive_user.updated_at= new Date();
-   			var query= um.table.update(inactive_user).where(um.table.email.equals(data.email));
-   			query.exec(function(err, res){
-   			console.log(err||res);
-   			if(res){
-   			inactive_user.id= res.insertId;
-   			}
-   			cb(err, inactive_user);
-   	  	});
-   		}
-	   }
-  	});
+    var selquery = um.table.select(um.table.status).where(um.table.email.equals(data.email));  
+        selquery.exec(function(err, res){
+       console.log(err||res);
+        });
+
+    if(selquery.value==1){
+      console.log("user active");
+    }
+    else{
+      //console.log("User is  active");
+      var inactive_user={};
+      if(data.email){
+        inactive_user.status = data.status;
+        var query = um.table.update(inactive_user).where(um.table.email.equals(data.email));
+        query.exec(function(err, res){
+          console.log(err||res);
+          if(res){
+            inactive_user.id= res.insertId;
+          }
+          cb(err, inactive_user);
+        });
+      }
+     }
   }
 };
 
@@ -165,7 +170,7 @@ if (require.main === module) {
 
     var data = {
       //id: 6,
-      email: 'kanika.sharma@paytm.com',
+      email: 'test@paytm.com',
       status:'0'
       //phone: '9909496511'
       // firstname: 'testing',
