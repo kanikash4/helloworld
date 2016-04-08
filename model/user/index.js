@@ -133,15 +133,14 @@ var um = {
   
   remove: function removefn(data, cb) {
     var selquery = um.table.select(um.table.status).where(um.table.email.equals(data.email));  
-        selquery.exec(function(err, res){
-       console.log(err||res);
-        });
+       //  selquery.exec(function(err, res){
+       // console.log(err||res);
+       //  });
 
     if(selquery.value==1){
-      console.log("user active");
+      console.log("user is active");
     }
     else{
-      //console.log("User is  active");
       var inactive_user={};
       if(data.email){
         inactive_user.status = data.status;
@@ -152,6 +151,7 @@ var um = {
             inactive_user.id= res.insertId;
           }
           cb(err, inactive_user);
+          console.log("user made inactive");
         });
       }
      }
@@ -170,7 +170,7 @@ if (require.main === module) {
 
     var data = {
       //id: 6,
-      email: 'test@paytm.com',
+      email: '123@123.com',
       status:'0'
       //phone: '9909496511'
       // firstname: 'testing',
