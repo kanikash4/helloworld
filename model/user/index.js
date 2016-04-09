@@ -1,5 +1,7 @@
 'use strict';
 
+var bcrypt = require('bcrypt');
+
 var db = require('../db');
 
 var um = {
@@ -11,37 +13,41 @@ var um = {
   }),
 
   create: function createfn(data, cb) {
-    if (!data.email) {
-      return cb(new Error('Missing required field: Email'));
+    if (!data.email || !data.password) {
+      return cb(new Error('Missing required field: Email/Password'));
     }
     um.isEmailAvailable(data.email, function (err, exists) {
       if (err || exists) {
         return cb(err || new Error('User already exists.. Cannot Add: ' + data.email));
       } else {
-        //add new user
-        var newuser = {
-          email: data.email,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          status: 1,
-          phone: data.phone,
-          username: data.username,
-
-          // XXX: use bcrypt module to encrypt password
-          password: data.password,
-          created_at: new Date()
-        };
-
-        var query = um.table.insert(newuser);
-
-        query.exec(function (err, res) {
-          console.log(err || res);
-
-          if (res) {
-            newuser.id = res.insertId;
+        encrypt(data.password, function (err, hash) {
+          if (err || !hash) {
+            return cb(err || new Error('Unable to generate password hash'));
           }
 
-          cb(err, newuser);
+          //add new user
+          var newuser = {
+            email: data.email,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            status: 1,
+            phone: data.phone,
+            username: data.username,
+            password: hash,
+            created_at: new Date()
+          };
+
+          var query = um.table.insert(newuser);
+
+          query.exec(function (err, res) {
+            console.log(err || res);
+
+            if (res) {
+              newuser.id = res.insertId;
+            }
+
+            cb(err, newuser);
+          });
         });
       }
     });
@@ -95,8 +101,38 @@ var um = {
     };
 
     um.table.update(updateData).where(um.table.email.equals(data.email)).exec(cb);
+  },
+
+  authenticate: function authenticatefn(data, cb) {
+    if (!data.email || !data.password) {
+      return cb(new Error('Missing required params: email/password'));
+    }
+
+    var keys = {
+      email: data.email
+    };
+
+    var options = {
+      selectFields: ['id', 'email', 'password']
+    };
+
+    um.fetch(keys, options, function (err, res) {
+      if (err || !res || !res.length) {
+        return cb(err || new Error('No such user: ' + data.email));
+      }
+
+      var dbUser = res[0];
+
+      bcrypt.compare(data.password, dbUser.password, cb);
+    })
   }
 };
+
+function encrypt(password, cb) {
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, cb);
+  });
+}
 
 module.exports = um;
 
@@ -140,8 +176,10 @@ if (require.main === module) {
     // });
 
     //to run remove function to change status of user 0/1
-    um.remove(data, function (err, res) {
-      console.log(err || res);
-    });
+    // um.remove(data, function (err, res) {
+    // 	console.log(err || res);
+    // });
+
+    encrypt('xxx', console.log);
   })();
 }
