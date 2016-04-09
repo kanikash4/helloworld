@@ -8,7 +8,7 @@ var config = {
     password: 'mysql123',
     host: 'localhost',
     database: 'mktplace'
-}
+};
 
 var dbConfig = {
  url: util.format('mysql://%s:%s@%s:3306/%s',
