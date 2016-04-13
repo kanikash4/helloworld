@@ -8,7 +8,8 @@ var um = {
 
   table: db.define({
     name: 'users',
-    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'username', 'password',
+    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'username',
+      'password',
       'created_at', 'updated_at']
   }),
 
@@ -88,7 +89,22 @@ var um = {
       return cb(new Error('Missing required field for update: email'));
     }
 
-    um.table.update(data).where(um.table.email.equals(data.email)).exec(cb);
+    if (data.password) {
+      encrypt(data.password, function (err, hash) {
+        if (err || !hash) {
+          return cb(new Error('Unable to generate password hash'));
+        }
+
+        data.password = hash;
+        updateUser();
+      });
+    } else {
+      updateUser();
+    }
+
+    function updateUser() {
+      um.table.update(data).where(um.table.email.equals(data.email)).exec(cb);
+    }
   },
 
   remove: function removefn(data, cb) {
@@ -124,7 +140,7 @@ var um = {
       var dbUser = res[0];
 
       bcrypt.compare(data.password, dbUser.password, cb);
-    })
+    });
   }
 };
 
