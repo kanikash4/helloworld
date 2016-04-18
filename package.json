@@ -16,5 +16,8 @@
     "mysequel": "git://github.com/paytm/mysequel.git",
     "mysql": "^2.10.2",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.1"
   }
 }

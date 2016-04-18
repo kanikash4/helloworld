@@ -1,3 +1,9 @@
 // message will be set if auth failed, add conditional element to show this message
 
-p Add login form here
+p Login form
+
+	form(name="login-page" action="/login" method="post")
+	input(type="text" name="email" placeholder="Email Id")
+	input(type="password" name="pass" placeholder="password")
+	input(type="submit"  value="login" name="btnLogin")
+	a(href='/forgot-password') Forgot Password
