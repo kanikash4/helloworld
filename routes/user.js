@@ -32,12 +32,21 @@ var user = {
       }
 
       if (result) {
-        res.render('index');
+        req.session.email = email;
+        res.render('dashboard');
       } else {
-        res.locals.message = 'Authentication failed';
-        res.render('login');
+        //res.locals.message = 'Authentication failed';
+        console.log("login failed");
+        res.render('login',{logFailMessage: 'Login failed'});
       }
     }
+  },
+
+  dashboardWelcome: function dashboardWelcomefn(req, res){
+    if(!req.session.email){
+      return res.status(401).send();
+    }
+    return res.status(200).send("welcome to super secret api")
   },
 
 
@@ -47,18 +56,46 @@ var user = {
   validateSignup: function validateSignupfn(req, res,  next){
     if(!req.body ||req.body.firstName ||req.body.lastName || req.body.email || req.body.phone  || req.body.pass){
       err= new Error('Missing some fields. Fill All the fields');
+
+      console("error occured");
     }
+
     next(err);
   },
   signup: function signupfn(req, res, next){
-    // var data = {
-    //   firstName   : req.body.firstName,
-    //   lastName    : req.body.lastName,
-    //   phone       : req.body.phone,
-    //   email       : req.body.email,
-    //   password    : req.body.password
-    // };
-    // //insertquery
+    console.log('signing up the user');
+    var data = {
+      firstName   : req.body.firstName,
+      lastName    : req.body.lastName,
+      phone       : req.body.phone,
+      email       : req.body.email,
+      password    : req.body.password
+    };
+    
+    //insertquery
+    if(!err)
+    um.create(data, respond);
+
+    function respond(err, result) {
+      if (err) {
+        return next(err);
+      }
+      if (result) {
+        res.render('signup',{signupMessage:"Successfully signed up."});
+      } else {
+        //res.locals.message = 'Authentication failed';
+        console.log("login failed");
+        res.render('login',{logFailMessage: 'Login failed'});
+      }
+    }
+    
+   
+  },
+  
+
+  respond: function  respondfn(){
+     //req.flash('success', 'You are now registered and may log in');
+
     // if(!err){
     //   var transporter= nodemailer.createTransport({
     //     service   : 'Gmail',
@@ -68,7 +105,7 @@ var user = {
     //                 }
     //   });
     //    var mailOptions = {
-    //     from    : 'Node Application <---@gmail.com>'
+    //     from    : 'Node Application <---@gmail.com>',
     //     to      : req.body.email,
     //     subject : 'Email Verification Process',
     //     text    : 'Email Verification',
@@ -84,22 +121,50 @@ var user = {
 
     // });
   },
-  
-
-  respond: function  respondfn(){},
   forgotPasswordPage: function forgotPasswordPagefn(req, res, next){
-    res.render('forgotPassword');
+
+    res.render('forgot-password');
+    //function(){}
   },
-  validateResetRequest: function validateResetRequestfn(){},
-  createResetRequest: function createResetRequestfn(){},
+  validateResetRequest: function validateResetRequestfn(req, res){
+    var data =  {
+        email : req.body.email  
+    }; 
+    
+    // var reset = forgot(email,  function(err){
+    //   if(err) 
+    //     res.render('forgot-password',{resetFailMsg: 'failed....'});
+    // });
+  },
+  createResetRequest: function createResetRequestfn(){
+   
+  },
   sendResetMail: function sendResetMailfn(){},
   validateHash: function validateHashfn(){},
-  resetPasswordPage: function resetPasswordPagefn(){},
-  validateResetPassword: function validateResetPasswordfn(req, res, next){
+  resetPasswordPage: function resetPasswordPagefn(){
     res.render('reset-password');
   },
-  resetPassword: function resetPasswordfn(){}
+  validateResetPassword: function validateResetPasswordfn(req, res, next, err){
+    if(!req.body.password|| req.body.confirm)
+      return next(err);
+  },
+  resetPassword: function resetPasswordfn(req, res, next, err){
+     //if(!req.session.reset)
+      return next(err);
+    var data={
+      password   : req.body.password,
+      confirm    : req.body.confirm
+    };
+    if(req.body.password !== req.body.confirm) {
+      //res.end('password mismatch');
+      console.log("password mismatch");
+    }
+    else{
+      um.update(data, respond);
+      //{resetMsg}//password successfully 
+    }
 
+  }
 
 
 };

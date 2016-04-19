@@ -8,6 +8,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session =require('express-session');
 //var nodemailer = require('nodemailer');
 
 var app = express();
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+app.use(session({secret:"secretapisecret", resave:false, saveUninitialized:true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 require('./routes')(app);

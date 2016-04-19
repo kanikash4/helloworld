@@ -12,6 +12,8 @@ module.exports = function (app) {
   app.get('/login', user.loginPage);
   app.post('/login', user.validateLogin, user.login, error);
 
+  app.get('/dashboard', user.dashboardWelcome);
+
   app.get('/signup', user.signupPage);
   app.post('/signup', user.validateSignup, user.signup, user.respond, error);
 

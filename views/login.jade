@@ -1,12 +1,17 @@
-// message will be set if auth failed, add conditional element to show this message
+link(rel='stylesheet', href='style.css')
 
 p Login form
 
 	form(name="login-page" action="/login" method="post")
-	input(type="text" name="email" placeholder="Email Id")
-	input(type="password" name="pass" placeholder="password")
-	input(type="submit"  value="login" name="btnLogin")
-	br
-	a(href='/forgot-password') Forgot Password
-	br
-	a(href='/signup') Sign Up
+		input(type="text" name="email" placeholder="Email Id" required="required")
+		input(type="password" name="password" placeholder="password" required="required")
+		input(type="submit"  value="Log In")
+
+br
+a(href='/forgot-password') Forgot Password
+br
+a(href='/signup') Sign Up
+br
+span(style='color:red') #{logFailMessage}
+
+

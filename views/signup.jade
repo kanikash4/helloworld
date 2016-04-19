@@ -1,18 +1,22 @@
+link(rel='stylesheet', href='style.css')
 
 p SignUp Form
 
 	form(name="signup-page" action="/signup" method="post")
-		p label First Name
-		input(type="text" name="firstName" placeholder="First name")
-		p label Last Name
-		input(type="text" name="lastName" placeholder="Last name")
-		p label Phone No.
-		input(type="text" name="phone" placeholder="Phone number")
-		p label Email
-		input(type="email" name="email" placeholder="email-id")
-		p label Password
-		input(type="password" name="pass" placeholder="password")
+		p First Name
+		input(type="text" name="firstName" placeholder="First name" required="required")
+		p Last Name
+		input(type="text" name="lastName" placeholder="Last name" required="required")
+		p Phone No.
+		input(type="text" name="phone" placeholder="Phone number" required="required")
+		p Email
+		input(type="email" name="email" placeholder="email-id" required="required")
+		p Password
+		input(type="password" name="password" placeholder="password" required="required")
 		p
-		input(type="submit"  value="Sign-Up") Sign Up
+		input(type="submit"  value="Sign Up")
+	br
+	span(style='color:blue') #{signupMessage}
+	span(style='color:red') #{signupError}
 
 

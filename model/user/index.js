@@ -8,8 +8,7 @@ var um = {
 
   table: db.define({
     name: 'users',
-    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'username',
-      'password',
+    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'username',  'password',
       'created_at', 'updated_at']
   }),
 
@@ -161,14 +160,14 @@ if (require.main === module) {
 
 
     var data = {
-      //id: 6,
-      email: '123@123.com',
-      status: '0'
-        //phone: '9909496511'
-        // firstname: 'testing',
-        // lastname: 'testing with new dbinsertion',
-        // username: 'user1',
-        // password: 'test'
+      // id: 6,
+      // email: 'kanikash4@gmail.com',
+      // status: '0',
+      //   phone: '9909496511',
+      //   firstname: 'kk',
+      //   lastname: 'ss',
+      //   username: 'user1',
+      //   password: 'test'
 
     };
 
@@ -196,6 +195,6 @@ if (require.main === module) {
     // 	console.log(err || res);
     // });
 
-    encrypt('xxx', console.log);
+    encrypt('kkk', console.log);
   })();
 }
