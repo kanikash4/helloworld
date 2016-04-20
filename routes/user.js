@@ -59,7 +59,7 @@ var user = {
     }
      return next(err);
   },
-  signup: function signupfn(err, req, res, next){
+  signup: function signupfn(req, res, next){
     console.log("signing up the user");
     var data = {
       firstName   : req.body.firstName,
@@ -68,8 +68,6 @@ var user = {
       email       : req.body.email,
       password    : req.body.password
     };
-    //insertquery
-    if(!err)
     um.create(data, respond);
 
     function respond(err, result) {
@@ -83,38 +81,36 @@ var user = {
         //res.render('login',{logFailMessage: 'Login failed'});
       }
     }
-    
-   
+       
   },
   
-
-  respond: function  respondfn(){
+  respond: function  respondfn(err, req, res){
      //req.flash('success', 'You are now registered and may log in');
 
-    // if(!err){
-    //   var transporter= nodemailer.createTransport({
-    //     service   : 'Gmail',
-    //     auth      : {
-    //                   user: 'gmail id',
-    //                   pass: 'password of id'
-    //                 }
-    //   });
-    //    var mailOptions = {
-    //     from    : 'Node Application <---@gmail.com>',
-    //     to      : req.body.email,
-    //     subject : 'Email Verification Process',
-    //     text    : 'Email Verification',
-    //     html    : '<b>Hello</b>'+ req.body.firstName + '' + req.body.lastName + '<br> Please click on the link to activate your account <br> <a href="http://'+ req.headers.host + '/email-verify?token=' + token + ' "> Verify Email </a>'       }
-    // };
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if(error){
-    //     return console.log(error);
-    //   }
-    //   else{
-    //     res.render('signup',{signupMessage: 'You have successfully regisered. Kindly check the email to verify '});
-    //   }
+    if(!err){
+      var transporter= nodemailer.createTransport({
+        service   : 'Gmail',
+        auth      : {
+                      user: '---@gmail.com',
+                      pass: '---'
+                    }
+      });
+       var mailOptions = {
+        from    : 'Node Application <---@gmail.com>',
+        to      : req.body.email,
+        subject : 'Email Verification Process',
+        text    : 'Email Verification',
+        html    : '<b>Hello</b>'+ req.body.firstName + '' + req.body.lastName + '<br> Please click on the link to activate your account <br> <a href="http://'+ req.headers.host + '/email-verify?token=' + token + ' "> Verify Email </a>'       }
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+        return console.log(error);
+      }
+      else{
+        res.render('signup',{signupMessage: 'You have successfully regisered. Kindly check the email to verify '});
+      }
 
-    // });
+    });
   },
   forgotPasswordPage: function forgotPasswordPagefn(req, res, next){
 
