@@ -23,6 +23,8 @@ module.exports = function (app) {
   app.get('/reset-password/:resetHash', user.validateHash, user.resetPasswordPage);
   app.post('/reset-password', user.validateResetPassword, user.resetPassword);
 
+  app.post('/logout', user.loggingout);
+
 };
 
 

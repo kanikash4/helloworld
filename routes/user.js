@@ -11,7 +11,7 @@ var user = {
   validateLogin: function validateLoginfn(req, res, next) {
     // check for mandatory params;
     var err;
-    if (!req.body || !req.body.email || !req.body.password) {
+    if(!req.body || !req.body.email || !req.body.password) {
       err = new Error('Missing required params: email/password');
     }
 
@@ -27,13 +27,12 @@ var user = {
     um.authenticate(data, respond);
 
     function respond(err, result) {
-      if (err) {
+      if(err) {
         return next(err);
       }
-
-      if (result) {
-        req.session.email = email;
-        res.render('dashboard');
+      if(result) {
+        req.session.email = req.body.email;
+        res.render('dashboard',{welcomeDashMsg:"Welcome to Dashboard"});
       } else {
         //res.locals.message = 'Authentication failed';
         console.log("login failed");
@@ -51,19 +50,17 @@ var user = {
 
 
   signupPage: function signupPagefn(req, res, next){
-    res.render('signup',{title: 'signup page'});
+    res.render('signup');
   },
-  validateSignup: function validateSignupfn(req, res,  next){
-    if(!req.body ||req.body.firstName ||req.body.lastName || req.body.email || req.body.phone  || req.body.pass){
+  validateSignup: function validateSignupfn(err, req, res,  next){
+    if(!req.body || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.phone  || !req.body.password){
       err= new Error('Missing some fields. Fill All the fields');
-
       console("error occured");
     }
-
-    next(err);
+     return next(err);
   },
-  signup: function signupfn(req, res, next){
-    console.log('signing up the user');
+  signup: function signupfn(err, req, res, next){
+    console.log("signing up the user");
     var data = {
       firstName   : req.body.firstName,
       lastName    : req.body.lastName,
@@ -71,7 +68,6 @@ var user = {
       email       : req.body.email,
       password    : req.body.password
     };
-    
     //insertquery
     if(!err)
     um.create(data, respond);
@@ -83,9 +79,8 @@ var user = {
       if (result) {
         res.render('signup',{signupMessage:"Successfully signed up."});
       } else {
-        //res.locals.message = 'Authentication failed';
-        console.log("login failed");
-        res.render('login',{logFailMessage: 'Login failed'});
+        console.log("Signup failed");
+        //res.render('login',{logFailMessage: 'Login failed'});
       }
     }
     
@@ -150,7 +145,7 @@ var user = {
   },
   resetPassword: function resetPasswordfn(req, res, next, err){
      //if(!req.session.reset)
-      return next(err);
+     // return next(err);
     var data={
       password   : req.body.password,
       confirm    : req.body.confirm
@@ -160,10 +155,26 @@ var user = {
       console.log("password mismatch");
     }
     else{
+      um.authenticate(data, respond);
       um.update(data, respond);
-      //{resetMsg}//password successfully 
+      console.log("pasword updated successfully");
+      res.render(login,{resetMsg:"password successfully updated.You can login now"});
     }
 
+  },
+
+  loggingout: function logoutfn(req, res){
+    if(req.session)
+    req.session.destroy(function(err){
+      if(err){
+        console.log(err);
+      }
+      else{
+      res.render('login');        
+      }
+    });
+      
+    
   }
 
 

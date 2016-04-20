@@ -13,7 +13,7 @@ var um = {
   }),
 
   create: function createfn(data, cb) {
-    if (!data.email || !data.password) {
+    if (!data.email || !data.password || !data.firstName || !data.lastName || !data.phone) {
       return cb(new Error('Missing required field: Email/Password'));
     }
     um.isEmailAvailable(data.email, function (err, exists) {
@@ -28,8 +28,8 @@ var um = {
           //add new user
           var newuser = {
             email: data.email,
-            firstname: data.firstname,
-            lastname: data.lastname,
+            firstname: data.firstName,
+            lastname: data.lastName,
             status: 1,
             phone: data.phone,
             username: data.username,
