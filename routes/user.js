@@ -70,11 +70,11 @@ var user = {
   signup: function signupfn(req, res, next) {
     console.log("signing up the user");
     var data = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phone: req.body.phone,
-      email: req.body.email,
-      password: req.body.password
+      firstName     : req.body.firstName,
+      lastName      : req.body.lastName,
+      phone         : req.body.phone,
+      email         : req.body.email,
+      password      : req.body.password
     };
 
     um.create(data, respond);
@@ -96,12 +96,12 @@ var user = {
 
   respond: function respondfn(err, req, res) {
     //req.flash('success', 'You are now registered and may log in');
-
+    console.log("sending mail to activate the account");
     if (!err) {     
       // XXX: generate a random hash (uuid)
       var token = 'dfghjkl'; 
       var mailOptions = {
-        from: 'Node Application <---@gmail.com>',
+        from: 'Node Application <get2shikhakaushik@gmail.com>',
         to: req.body.email,
         subject: 'Email Verification Process',
         text: 'Email Verification',
@@ -132,13 +132,18 @@ var user = {
       email: req.body.email
     };
 
-    // var reset = forgot(email,  function(err){
-    //   if(err) 
-    //     res.render('forgot-password',{resetFailMsg: 'failed....'});
-    // });
   },
 
   createResetRequest: function createResetRequestfn(req, res, next) {
+
+    // var reset = forgot(email,  function(err){
+    //   if(err) 
+    //     res.render('forgot-password',{resetFailMsg: 'failed....'});
+    //   else res.render('',{resetMsg: 'check inbox for a password reset message'});
+    // });
+    // reset.on('', function(req, res){
+    //   req.session.reset = {email:email,}
+    // });
 
   },
   sendResetMail: function sendResetMailfn(req, res, next) {},
@@ -175,12 +180,11 @@ var user = {
   },
 
   loggingout: function logoutfn(req, res) {
-    if (req.session) {
+    if (req.session.email) {
       req.session.destroy(function (err) {
         if (err) {
           console.log(err);
         }
-
         res.render('login');
       });
     }
