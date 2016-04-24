@@ -3,6 +3,7 @@
 var um = require('../model').user;
 
 var mailer = require('../lib/mailer');
+var uid = require('rand-token').uid;
 
 var user = {
   loginPage: function loginPagefn(req, res, next) {
@@ -68,7 +69,6 @@ var user = {
   },
 
   signup: function signupfn(req, res, next) {
-    console.log("signing up the user");
     var data = {
       firstName     : req.body.firstName,
       lastName      : req.body.lastName,
@@ -84,9 +84,7 @@ var user = {
         return next(err);
       }
       if (result) {
-        res.render('signup', {
-          signupMessage: "Successfully signed up."
-        });
+        next();
       } else {
         console.log("Signup failed");
         //res.render('login',{logFailMessage: 'Login failed'});
@@ -94,20 +92,18 @@ var user = {
     }
   },
 
-  respond: function respondfn(err, req, res) {
+  respond: function respondfn(req, res) {
     //req.flash('success', 'You are now registered and may log in');
-    console.log("sending mail to activate the account");
-    if (!err) {     
       // XXX: generate a random hash (uuid)
-      var token = 'dfghjkl'; 
+      var token = uid(30);
       var mailOptions = {
-        from: 'Node Application <get2shikhakaushik@gmail.com>',
+        from: 'Email Verification <get2shikhakaushik@gmail.com>',
         to: req.body.email,
         subject: 'Email Verification Process',
         text: 'Email Verification',
-        html: '<b>Hello</b>' + req.body.firstName + '' + req.body.lastName +
+        html: '<b>Hello </b>' + req.body.firstName + ' ' + req.body.lastName +
           '<br> Please click on the link to activate your account <br> <a href="http://' +
-          req.headers.host + '/email-verify?token=' + token + ' "> Verify Email </a>'
+          req.headers.host + '/emailVerify?token=' + token + ' "> Verify Email </a>'
       };
 
       mailer.sendMail(mailOptions, function (error, info) {
@@ -119,7 +115,10 @@ var user = {
           });
         }
       });
-    }
+  },
+
+  emailVerify: function emailVerifyfn(req, res, next) {
+    console.log(req.query);
   },
 
   forgotPasswordPage: function forgotPasswordPagefn(req, res, next) {
@@ -137,7 +136,7 @@ var user = {
   createResetRequest: function createResetRequestfn(req, res, next) {
 
     // var reset = forgot(email,  function(err){
-    //   if(err) 
+    //   if(err)
     //     res.render('forgot-password',{resetFailMsg: 'failed....'});
     //   else res.render('',{resetMsg: 'check inbox for a password reset message'});
     // });
@@ -173,7 +172,7 @@ var user = {
         resetMsg: "password successfully updated.You can login now"
       });
     }
-    
+
     function respond(err, result) {
       // XXX: what is this for?
     }

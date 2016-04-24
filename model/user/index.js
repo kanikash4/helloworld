@@ -8,7 +8,7 @@ var um = {
 
   table: db.define({
     name: 'users',
-    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'username',  'password',
+    columns: ['id', 'email', 'firstname', 'lastname', 'status', 'phone', 'password',
       'created_at', 'updated_at']
   }),
 
@@ -32,7 +32,6 @@ var um = {
             lastname: data.lastName,
             status: 1,
             phone: data.phone,
-            username: data.username,
             password: hash,
             created_at: new Date()
           };
@@ -161,12 +160,11 @@ if (require.main === module) {
 
     var data = {
       // id: 6,
-      // email: 'kanikash4@gmail.com',
+      // email: 'get2shikhadubey@gmail.com',
       // status: '0',
       //   phone: '9909496511',
       //   firstname: 'kk',
       //   lastname: 'ss',
-      //   username: 'user1',
       //   password: 'test'
 
     };

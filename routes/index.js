@@ -16,6 +16,7 @@ module.exports = function (app) {
 
   app.get('/signup', user.signupPage);
   app.post('/signup', user.validateSignup, user.signup, user.respond, error);
+  app.get('/emailVerify', user.emailVerify);
 
   app.get('/forgot-password', user.forgotPasswordPage);
   app.post('/reset-request', user.validateResetRequest, user.createResetRequest,
@@ -35,7 +36,7 @@ module.exports = function (app) {
 //respond
 
 // http://localhost:3000/reset-password/skdhfksdflsl,mxnc9ueljksdjflkdsjflds
-// 
+//
 // reset hash - (generate uuid.v4())
 //   - will have expiry (24 hours)
 //   - every new hash will invalidate old hash
