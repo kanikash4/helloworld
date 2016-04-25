@@ -1,7 +1,6 @@
 'use strict';
 
 var db = require('../db');
-var bcrypt = require('bcrypt');
 var hm = {
             table       :db.define({
             name        : 'userHash',
@@ -9,26 +8,7 @@ var hm = {
           }),
   create: function createfn(userId, cb) {
     // create a new hash for this user and save it hash table
-        //generate a salt
-        var salt = bcrypt.genSaltSync(10);
-        //hash the password with salt
-        var hash = bcrypt.hashSync("mypassword", salt);
-         //storing the hash in db
-         var data = 'kanikash4@gmail.com';
-         //add userhash
-          var userentry = {
-            email       : data.email,
-            hash        : hash,
-            created_at  : new Date()
-          };
-         var query = hm.table.insert(userentry);
-         query.exec(function(err, res){
-          console.log(err||res);
-          if(res){
-            console.log("done");
-          }
-          cb(err, userentry)
-         })
+        
     
     // // invlidate older hashes if exist for this user;
   },
@@ -52,8 +32,6 @@ var hm = {
   
   isValidHash: function validatefn(hash, cb) {
     // check if this hash exists and has not expired
-    bcrypt.compareSync("my password",hash);//true
-    bcrypt.compareSync("not my password",hash);//false
   },
   
   resetHash: function resetHashfn(userId, hash, cb) {
@@ -84,7 +62,3 @@ if (require.main === module) {
 
   })();
 }
-
-
-
-
