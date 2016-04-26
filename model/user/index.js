@@ -84,48 +84,6 @@ var um = {
     console.log(query.toQuery());
 
     query.exec(cb);
-
-
-
-
-
-
-
-
-
-
-    // function fetch1(error , results, feilds){
-    //   if(results.length>0){
-    //   if(results[0].status==0){
-    //     var expiryTime = Math.floor(Date.now() / 1000) - results[0].created_at;
-    //     if (expiryTime > 86400) {
-    //       //res.render('accountActivation', { layout: false, message: 'Sorry! Your verification link has been expired'});
-    //       console.log("account expired");
-    //     } else {
-    //       var data = {
-    //         email: 'kanika.sharma@paytm.com'
-    //       };
-    //      um.update(data, respond),
-    //       // um.query({
-    //       //   sql: 'UPDATE `users1` SET `status` = ? WHERE `username` = ? and `password` = ?',
-    //       //   values: [1, results[0].username, results[0].password]
-    //       // },
-    //        function(errorUpdate, resultUpdate) {
-    //         if(resultUpdate.affectedRows==1){
-    //           //res.render('accountActivation', { layout: false, message: 'Congratulation! Your account has been successfully activated'});
-    //           console.log("account has been successfully activated");
-    //          }
-    //    else {
-    //     console.log("already activated account");
-    //     //res.render('accountActivation', { layout: false, message: 'Your account is already activated'});
-    //   }
-    // //   else {
-    // //   console.log("invalid token");
-    // //   //res.render('accountActivation', { layout: false, message: 'Sorry! Invalid token number'});
-    // // }
-    // };
-
-
   },
 
   update: function updatefn(data, cb) {

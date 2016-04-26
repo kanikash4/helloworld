@@ -5,6 +5,18 @@ var um = require('../model').user;
 var mailer = require('../lib/mailer');
 var uid = require('rand-token').uid;
 var gentoken = uid(30);
+
+var uuid =  require('node-uuid');
+// uuid.v1({
+//   node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+//   clockseq: 0x1234,
+//   msecs: new Date('2011-11-01').getTime(),
+//   nsecs: 5678
+// });
+
+var uuid1 = uuid.v1();
+var uuid4 = uuid.v4();
+
 var user = {
   loginPage: function loginPagefn(req, res, next) {
     res.render('login');
@@ -123,7 +135,7 @@ var user = {
   },
 
   emailVerify: function emailVerifyfn(req, res, next) {
-    console.log(JSON.stringify(req));
+    //console.log(JSON.stringify(req));
    var keys = {
      email : req.session.email
    };
@@ -138,7 +150,7 @@ var user = {
         res.render('login', {logFailMessage:'link has been expired'});
       }
       else { 
-        res.render('login', {logFailMessage: 'Email verified. Now you may login.'});
+        res.render('login', {logMsg: 'Email verified. Now you may login.'});
       }
      } else {
        res.render('login', {logFailMessage: 'Email Verification failed'});
@@ -159,23 +171,24 @@ var user = {
     var options = {
      'selectFields': ['email']
     };
-    um.fetch({email : req.body.email}, {selectFields : ['email']}, function(err, result) {
-     console.log("email received : " + req.body.email);
-     console.log(JSON.stringify(result));
-     if(err){
-      res.render('forgot-password', {resetMsg : ' email not present in db'});
-     }
-     else{
+    var query = um.fetch({email : req.body.email}, {selectFields : ['email']}, function(err, result) {
+     console.log("email received to check : " + req.body.email);
+     console.log(result);
+     if(result.length >0){
+      console.log(" present in db"+ result);
       res.render('forgot-password', {resetMsg : ' email present in db'});
+     }
+     else
+     {
+      console.log("data was not present");
+      res.render('forgot-password', {resetFailMsg : ' email not present in db'});
      }
      return next(err);
    });
-    
-
   },
 
-  createResetRequest: function createResetRequestfn(req, res, next) {
-
+  createResetRequest: function createResetRequestfn(err, req, res, next) {
+//////////////////hashhhhhhhhhhhh
     // var reset = forgot(email,  function(err){
     //   if(err)
     //     res.render('forgot-password',{resetFailMsg: 'failed....'});
@@ -184,9 +197,32 @@ var user = {
     // reset.on('', function(req, res){
     //   req.session.reset = {email:email}
     // });
+    return next(err);
 
   },
-  sendResetMail: function sendResetMailfn(req, res, next) {
+  sendResetMail: function sendResetMailfn(err, req, res, next) {
+    console.log("sending mail for reset password with hash generated");
+
+    var mailOptions = {
+        from: 'Reset Password <get2shikhakaushik@gmail.com>',
+        to: req.body.email,
+        subject: 'Reset Password Process',
+        text: 'Reset Password',
+        html: '<b>Hello </b>' + req.body.firstName + ' ' + req.body.lastName +
+          '<br> Please click on the link to reset your password <br> <a href="http://' +
+          req.headers.host + '/emailVerify?token=' + uuid1 + ' "> Verify Email </a>'
+      };
+      //console.log(uuid1);
+      mailer.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return console.log(error);
+        } else {
+          res.render('forgot-password', {
+            resetMsg: 'Attempt successful... Kindly check the email to verify '
+          });
+        }
+        return next(err);
+      });
 
   },
   validateHash: function validateHashfn(req, res, next) {},
@@ -212,7 +248,7 @@ var user = {
       um.update(data, respond);
       console.log("pasword updated successfully");
       res.render('login', {
-        resetMsg: "password successfully updated.You can login now"
+        resetMsg: "Password successfully updated.You can login now"
       });
     }
 
