@@ -1,10 +1,19 @@
-span(style='color:blue') #{welcomeDashMsg}
+html
+  head
+    title= 'Node Application'
+    link(rel='stylesheet', href='/stylesheets/style.css')
 
-p form(action="/logout" method="post" name="logging-out")
-    input(type="submit" value="Logout" name="logout")
+  body
 
-br
-
+    span(style='color:blue') #{welcomeDashMsg}
+    br
+    form(action="/logout" method="post" name="logging-out")
+        input(type="submit" value="Logout" name="logout")
+    br
+    form(name="image-upload" action="/public/images" method="post" enctype="multipart/form-data" style='float:right')
+        Select an image to upload:
+        input(type="file" name="image")
+        input(type="submit" value="Upload")
    
 
 

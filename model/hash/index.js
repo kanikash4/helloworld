@@ -9,14 +9,14 @@ var hm = {
             name        : 'userHash',
             columns     :['email','hash', 'created_at', 'updated_at']
           }),
-  create: function createfn(userId, cb) {
+  create: function createfn(entry, cb) {
     // create a new hash for this user and save it hash table
     //var vv =  ;
 
     var entry = {
       email: data.email,
-      //hash: uuid1,
-      created_at: new Date(),
+      hash: uuid1,
+      created_at: new Date()
     };
     hm.table.insert(entry).exec(cb);
     
@@ -87,9 +87,9 @@ module.exports = hm;
 
 if (require.main === module) {
   (function () {
-    // var data = {
-    //    email: 'kanikash4@gmail.com'
-    // };
+    var data = {
+       email: 'kanikash4@gmail.com'
+    };
 
     //to run create function
     hm.create(data, function (err, res) {

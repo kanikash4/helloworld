@@ -6,6 +6,7 @@ var path = require('path');
 var http = require('http');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var multer = require('multer');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session =require('express-session');
@@ -13,6 +14,7 @@ var nodemailer = require('nodemailer');
 
 var app = express();
 
+var uploading = multer({dest:  __dirname + '../public/images/', limits:{fileSize:1000000, files:1},});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

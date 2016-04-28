@@ -14,9 +14,10 @@
     "express-session": "^1.13.0",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
-    "nodemailer":"^2.3.1",
+    "multer": "^1.1.0",
     "mysequel": "git://github.com/paytm/mysequel.git",
     "mysql": "^2.10.2",
+    "nodemailer": "^2.3.1",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

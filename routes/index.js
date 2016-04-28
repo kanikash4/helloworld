@@ -26,6 +26,11 @@ module.exports = function (app) {
 
   app.post('/logout', user.loggingout);
 
+  app.post('/upload', user.imageUpload);
+
+
+
+
 };
 
 
