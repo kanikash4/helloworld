@@ -103,7 +103,7 @@ var user = {
   respond: function respondfn(req, res) {
     //req.flash('success', 'You are now registered and may log in');
       // XXX: generate a random hash (uuid)
-      if(req.session.email && uuid1>0){
+      if(req.session.email || uuid1>0){
       var mailOptions = {
         from: 'Email Verification <get2shikhakaushik@gmail.com>',
         to: req.body.email,
