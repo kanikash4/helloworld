@@ -7,37 +7,46 @@ var db = require('../db');
 var hm = {
             table       :db.define({
             name        : 'userHash',
-            columns     :['email','hash', 'created_at', 'updated_at']
+            columns     :['email','hash','status', 'created_at', 'updated_at']
           }),
-  create: function createfn(entry, cb) {
+  create: function createfn(data, cb) {
     // create a new hash for this user and save it hash table
-    //var vv =  ;
 
     var entry = {
-      email: data.email,
-      hash: uuid1,
-      created_at: new Date()
+      email       : data.email,
+      hash        : uuid4,
+      created_at  : new Date()
     };
-    hm.table.insert(entry).exec(cb);
+    var query = hm.table.insert(entry);
+          query.exec(function (err, result) {
+            console.log(err || result);
+            if (result) {
+              console.log(JSON.stringify("result in db: " +  result));
+              entry.id = result.insertId;
+            }
+            cb(err, entry);
+          });
     
-    // // invlidate older hashes if exist for this user;
+    // invlidate older hashes if exist for this user;
+    
   },
   
   fetch: function fetch(keys, options, cb) {
     //fetch hashes with given keys as filters
-    hm.table.select(options.selectFields);
+    var query = hm.table.select(options.selectFields);
     var filters = [];
     Object.keys(keys).forEach(function (key) {
       if (keys[key]) {
-        filters.push(tbl[key].equals(keys[key]));
+        filters.push(table[key].equals(keys[key]));
       }
     });
     if (filters.length) {
-      query = query.where.apply(tbl, filters);
+    query = query.where.apply(table, filters);
     }
     console.log(query.toQuery());
 
     query.exec(cb);
+
   },
   
   isValidHash: function validatefn(hash, cb) {

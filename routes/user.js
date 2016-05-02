@@ -1,14 +1,15 @@
 'use strict';
 
 var um = require('../model').user;
+var hm = require('../model').hash;
 
 var mailer = require('../lib/mailer');
-var uid = require('rand-token').uid;
-var gentoken = uid(30);
+//var uid = require('rand-token').uid;
+//var gentoken = uid(30);
 
-var uuid =  require('node-uuid');
-var uuid1 = uuid.v1();
-var uuid4 = uuid.v4();
+// var uuid =  require('node-uuid');
+// var uuid1 = uuid.v1();
+// var uuid4 = uuid.v4();
 
 var user = {
   loginPage: function loginPagefn(req, res, next) {
@@ -76,13 +77,48 @@ var user = {
   },
 
   signup: function signupfn(req, res, next) {
+   console.log("signing up the user");
+   var data={email:req.body.email};
+   hm.create(data, respond);
+   function respond(err,result){
+    if(err){
+      console.log("error : " + err);
+    }
+    else{
+      console.log("result : " + result);
+    }
+   }
+   //
+   console.log("fetching starts...");
+    var keys = {
+     email : req.body.email
+   };
+   //console.log(keys);
+   var options = {
+     'selectFields': ['email', 'hash']
+   };
+   
+   hm.fetch({email: req.body.email},{selectFields: ['email','hash']},function(err, result){
+    if (err) {
+      return next(err);
+     }
+     else
+     {
+      console.log("Fetching the token....");
+     console.log(result[0].hash);
+     var hashGen = result[0].hash;
+     }
+   });
+   console.log("fetching done..");
+
+   //hm.fetch();
     var data = {
       firstName     : req.body.firstName,
       lastName      : req.body.lastName,
       phone         : req.body.phone,
       email         : req.body.email,
       password      : req.body.password, 
-      token         : uuid1
+      token         : hashGen
     };
     req.session.email= req.body.email;
     um.create(data, respond);
@@ -100,7 +136,7 @@ var user = {
     }
   },
 
-  respond: function respondfn(req, res) {
+  respond: function respondfn(req, res, next) {
     //req.flash('success', 'You are now registered and may log in');
       // XXX: generate a random hash (uuid)
       if(req.session.email || uuid1>0){
@@ -137,7 +173,7 @@ var user = {
           req.headers.host + '/emailVerify?token=' + uuid4 + ' "> Verify Email </a>'
       };
       console.log(uuid4);
-      mailer.sendMail(mailOptions, function (error, info, next) {
+      mailer.sendMail(mailOptions, function (error, info) {
         if (error) {
          console.log(error);
         } else {
@@ -145,7 +181,7 @@ var user = {
             resetMsg: 'Attempt successful... Kindly check the email to verify '
           });
         }
-        return next(error);
+        return next();
       });
     }
   },
@@ -204,21 +240,18 @@ var user = {
   },
 
   createResetRequest: function createResetRequestfn(err, req, res, next) {
-    // var reset = forgot(email,  function(err){
-    //   if(err)
-    //     res.render('forgot-password',{resetFailMsg: 'failed....'});
-    //   else res.render('',{resetMsg: 'check inbox for a password reset message'});
-    // });
-    // reset.on('', function(req, res){
-    //   req.session.reset = {email:email}
-    // });
+    var data={
+      email      : req.body.email
+      //hash      : hm.uuid4
+    };
+    hm.create(data, respond);
     return next(err);
 
   },
   sendResetMail: function sendResetMailfn(err, req, res, next) {
-         return next(err);
+    return next(err);
   },
-  validateHash: function validateHashfn(req, res, next) {
+  validateHash: function validateHashfn(err, req, res, next) {
      //every new hash will invalidate old hash
   },
   resetPasswordPage: function resetPasswordPagefn(req, res, next) {
@@ -228,27 +261,31 @@ var user = {
     if (!req.body.password || req.body.confirm)
       return next(err);
   },
-  resetPassword: function resetPasswordfn(req, res, next, err) {
+  resetPassword: function resetPasswordfn(req, res, next) {
     //if(!req.session.reset)
     // return next(err);
-    var data = {
-      password: req.body.password,
-      confirm: req.body.confirm
-    };
     if (req.body.password !== req.body.confirm) {
       //res.end('password mismatch');
       console.log("password mismatch");
     } else {
-      um.authenticate(data, respond);
-      um.update(data, respond);
+      var updateData = {
+        emailId     : 'xxx',
+        userId      : 133,
+        password    : req.body.password
+      }
+
+      um.update(updateData, respond);
       console.log("pasword updated successfully");
-      res.render('login', {
-        resetMsg: "Password successfully updated.You can login now"
-      });
     }
 
     function respond(err, result) {
       // XXX: what is this for?
+      // check err if err pass updaet failed 
+      if(!err){
+      res.render('login', {
+        resetMsg: "Password successfully updated.You can login now"
+      });
+      }
     }
   },
 
@@ -268,5 +305,6 @@ var user = {
 
   }
 };
+
 
 module.exports = user;
