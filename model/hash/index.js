@@ -21,8 +21,9 @@ var hm = {
           query.exec(function (err, result) {
             console.log(err || result);
             if (result) {
-              console.log(JSON.stringify("result in db: " +  result));
-              entry.id = result.insertId;
+              //console.log(JSON.stringify("result in db: " +  result[0].email + ": " + result[0].hash));
+              //entry.id = result.insertId;
+              entry.email = result.insertEmail;
             }
             cb(err, entry);
           });
@@ -33,15 +34,16 @@ var hm = {
   
   fetch: function fetch(keys, options, cb) {
     //fetch hashes with given keys as filters
-    var query = hm.table.select(options.selectFields);
+    var  tbl = hm.table;
+    var query = tbl.select(options.selectFields);
     var filters = [];
     Object.keys(keys).forEach(function (key) {
       if (keys[key]) {
-        filters.push(table[key].equals(keys[key]));
+        filters.push(tbl[key].equals(keys[key]));
       }
     });
     if (filters.length) {
-    query = query.where.apply(table, filters);
+    query = query.where.apply(tbl, filters);
     }
     console.log(query.toQuery());
 

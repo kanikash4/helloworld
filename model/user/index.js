@@ -76,8 +76,6 @@ var um = {
         filters.push(tbl[key].equals(keys[key]));
       }
     });
-
-
     if (filters.length) {
       query = query.where.apply(tbl, filters);
     }

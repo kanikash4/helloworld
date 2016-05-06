@@ -76,20 +76,26 @@ var user = {
     return next(err);
   },
 
-  signup: function signupfn(req, res, next) {
-   console.log("signing up the user");
-   var data={email:req.body.email};
+  createHash: function createHashfn(req, res, next){
+    var data={email:req.body.email};
    hm.create(data, respond);
+
    function respond(err,result){
     if(err){
       console.log("error : " + err);
     }
     else{
-      console.log("result : " + result);
+      console.log(" dataset entered in userHash ");
     }
+    return next();
    }
-   //
-   console.log("fetching starts...");
+   //return next();
+  },
+
+  fetchHash: function fetchHashfn(req, res, next){
+    var hashGen;
+    console.log("received as request obj: " + req);
+    console.log("fetching starts...");
     var keys = {
      email : req.body.email
    };
@@ -97,28 +103,36 @@ var user = {
    var options = {
      'selectFields': ['email', 'hash']
    };
-   
-   hm.fetch({email: req.body.email},{selectFields: ['email','hash']},function(err, result){
+  
+   hm.fetch({email: req.body.email},{selectFields: ['email','hash']},function (err, result){
     if (err) {
       return next(err);
      }
-     else
-     {
+     else {
       console.log("Fetching the token....");
-     console.log(result[0].hash);
-     var hashGen = result[0].hash;
+      console.log(result[0].hash);
+      hashGen = result[0].hash;
+      req.body.crypto = hashGen;
+      console.log(req.body.crypto);
+      //return next();
      }
-   });
-   console.log("fetching done..");
+    });
+    console.log("fetching done..");
+    return next();
+  },
 
+  signup: function signupfn(req, res, next) {
+    console.log(JSON.stringify("request received from fetch is : " + req));
+    //console.log(req.body.crypto);
+   console.log("signing up the user");
    //hm.fetch();
     var data = {
       firstName     : req.body.firstName,
       lastName      : req.body.lastName,
       phone         : req.body.phone,
       email         : req.body.email,
-      password      : req.body.password, 
-      token         : hashGen
+      password      : req.body.password,
+      token         : req.body.crypto
     };
     req.session.email= req.body.email;
     um.create(data, respond);
@@ -134,12 +148,30 @@ var user = {
         //res.render('login',{logFailMessage: 'Login failed'});
       }
     }
+    return next();
   },
 
   respond: function respondfn(req, res, next) {
     //req.flash('success', 'You are now registered and may log in');
       // XXX: generate a random hash (uuid)
-      if(req.session.email || uuid1>0){
+      console.log("responding fn starts..");
+
+      var uuid4 = hm.fetch({email: req.body.email},{selectFields: ['hash']},function(err, result){
+    if (err) {
+      console.log("error occured : " + err);
+      return next(err);
+     }
+     else
+     {
+      console.log("Fetching the token for sending the mail....");
+     console.log(JSON.stringify(result));
+     }
+   });
+
+      //console.log("current value: " +uuid4);
+
+      if(req.session.email || uuid4>0){
+        console.log(uuid4);
       var mailOptions = {
         from: 'Email Verification <get2shikhakaushik@gmail.com>',
         to: req.body.email,
@@ -147,7 +179,7 @@ var user = {
         text: 'Email Verification',
         html: '<b>Hello </b>' + req.body.firstName + ' ' + req.body.lastName +
           '<br> Please click on the link to activate your account <br> <a href="http://' +
-          req.headers.host + '/emailVerify?token=' + uuid1 + ' "> Verify Email </a>'
+          req.headers.host + '/emailVerify?token=' + uuid4 + ' "> Verify Email </a>'
       };
 
       mailer.sendMail(mailOptions, function (error, info) {
@@ -242,9 +274,9 @@ var user = {
   createResetRequest: function createResetRequestfn(err, req, res, next) {
     var data={
       email      : req.body.email
-      //hash      : hm.uuid4
     };
     hm.create(data, respond);
+    function respond(){}
     return next(err);
 
   },
@@ -272,7 +304,7 @@ var user = {
         emailId     : 'xxx',
         userId      : 133,
         password    : req.body.password
-      }
+      };
 
       um.update(updateData, respond);
       console.log("pasword updated successfully");

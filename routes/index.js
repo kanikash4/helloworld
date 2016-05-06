@@ -15,7 +15,7 @@ module.exports = function (app) {
   app.get('/dashboard', user.dashboardWelcome);
 
   app.get('/signup', user.signupPage);
-  app.post('/signup', user.validateSignup, user.signup, user.respond, error);
+  app.post('/signup', user.validateSignup, user.createHash, user.fetchHash, user.signup, user.respond, error);
   app.get('/emailVerify', user.emailVerify);
 
   app.get('/forgot-password', user.forgotPasswordPage);
