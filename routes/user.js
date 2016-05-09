@@ -89,24 +89,22 @@ var user = {
     }
     return next();
    }
-   //return next();
   },
 
   fetchHash: function fetchHashfn(req, res, next){
     var hashGen;
-    console.log("received as request obj: " + req);
+    //console.log("received as request obj: " + req);
     console.log("fetching starts...");
     var keys = {
      email : req.body.email
    };
-   //console.log(keys);
    var options = {
      'selectFields': ['email', 'hash']
    };
   
    hm.fetch({email: req.body.email},{selectFields: ['email','hash']},function (err, result){
     if (err) {
-      return next(err);
+     console.log(err);
      }
      else {
       console.log("Fetching the token....");
@@ -114,18 +112,16 @@ var user = {
       hashGen = result[0].hash;
       req.body.crypto = hashGen;
       console.log(req.body.crypto);
-      //return next();
+      next();
      }
     });
     console.log("fetching done..");
-    return next();
+    //return next();
   },
 
   signup: function signupfn(req, res, next) {
-    console.log(JSON.stringify("request received from fetch is : " + req));
-    //console.log(req.body.crypto);
+   console.log(req.body.crypto);
    console.log("signing up the user");
-   //hm.fetch();
     var data = {
       firstName     : req.body.firstName,
       lastName      : req.body.lastName,
@@ -142,10 +138,10 @@ var user = {
         return next(err);
       }
       if (result) {
-        next();
+        console.log("sign up successful");
+        //next();
       } else {
         console.log("Signup failed");
-        //res.render('login',{logFailMessage: 'Login failed'});
       }
     }
     return next();
@@ -155,23 +151,10 @@ var user = {
     //req.flash('success', 'You are now registered and may log in');
       // XXX: generate a random hash (uuid)
       console.log("responding fn starts..");
+      console.log(" value of hash in req obj: "+req.body.crypto);
 
-      var uuid4 = hm.fetch({email: req.body.email},{selectFields: ['hash']},function(err, result){
-    if (err) {
-      console.log("error occured : " + err);
-      return next(err);
-     }
-     else
-     {
-      console.log("Fetching the token for sending the mail....");
-     console.log(JSON.stringify(result));
-     }
-   });
-
-      //console.log("current value: " +uuid4);
-
-      if(req.session.email || uuid4>0){
-        console.log(uuid4);
+      if(req.session.email || req.body.crypto>0){
+        console.log(req.body.crypto);
       var mailOptions = {
         from: 'Email Verification <get2shikhakaushik@gmail.com>',
         to: req.body.email,
@@ -179,7 +162,7 @@ var user = {
         text: 'Email Verification',
         html: '<b>Hello </b>' + req.body.firstName + ' ' + req.body.lastName +
           '<br> Please click on the link to activate your account <br> <a href="http://' +
-          req.headers.host + '/emailVerify?token=' + uuid4 + ' "> Verify Email </a>'
+          req.headers.host + '/emailVerify?token=' + req.body.crypto + ' "> Verify Email </a>'
       };
 
       mailer.sendMail(mailOptions, function (error, info) {
@@ -202,9 +185,9 @@ var user = {
         text: 'Reset Password',
         html: '<b>Hello </b>' + 
           '<br> Please click on the link to reset your password <br> <a href="http://' +
-          req.headers.host + '/emailVerify?token=' + uuid4 + ' "> Verify Email </a>'
+          req.headers.host + '/emailVerify?token=' + req.body.crypto + ' "> Reset Password </a>'
       };
-      console.log(uuid4);
+      console.log(req.body.crypto);
       mailer.sendMail(mailOptions, function (error, info) {
         if (error) {
          console.log(error);
@@ -261,30 +244,43 @@ var user = {
      if(result.length >0){
       console.log(" present in db"+ result);
       res.render('forgot-password', {resetMsg : ' email present in db'});
+      next();
      }
      else
      {
       console.log("data was not present");
       res.render('forgot-password', {resetFailMsg : ' email not present in db'});
      }
-     return next(err);
    });
   },
 
-  createResetRequest: function createResetRequestfn(err, req, res, next) {
+  createResetRequest: function createResetRequestfn(req, res, next) {
+    console.log("create reset request function starts...");
     var data={
       email      : req.body.email
     };
     hm.create(data, respond);
-    function respond(){}
-    return next(err);
-
+    function respond(err, result){
+      // if(!err)
+      //   console.log("hash is generated for reset password");
+      //  return next();
+      if(err){
+        console.log("error : " + err);
+      }
+      else {
+        console.log("hash is generated for reset password");
+      }
+      return next();
+    }
   },
   sendResetMail: function sendResetMailfn(err, req, res, next) {
-    return next(err);
+    console.log("send reset mail fn.....");
+     next();
   },
   validateHash: function validateHashfn(err, req, res, next) {
      //every new hash will invalidate old hash
+     console.log("validating the hash");
+     next();
   },
   resetPasswordPage: function resetPasswordPagefn(req, res, next) {
     res.render('reset-password');

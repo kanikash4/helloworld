@@ -19,7 +19,7 @@ module.exports = function (app) {
   app.get('/emailVerify', user.emailVerify);
 
   app.get('/forgot-password', user.forgotPasswordPage);
-  app.post('/reset-request', user.validateResetRequest, user.createResetRequest,
+  app.post('/reset-request', user.validateResetRequest, user.createResetRequest,user.fetchHash, 
     user.sendResetMail, user.respond, error);
   app.get('/reset-password/:resetHash', user.validateHash, user.resetPasswordPage);
   app.post('/reset-password', user.validateResetPassword, user.resetPassword);
