@@ -21,8 +21,9 @@ var user = {
     var err;
     if (!req.body || !req.body.email || !req.body.password) {
       err = new Error('Missing required params: email/password');
+      next(err);
     }
-    next(err);
+    next();
   },
 
   login: function loginfn(req, res, next) {
@@ -68,12 +69,13 @@ var user = {
     res.render('signup');
   },
 
-  validateSignup: function validateSignupfn(err, req, res, next) {
+  validateSignup: function validateSignupfn(req, res, next) {
     if (!req.body || !req.body.firstName || !req.body.lastName || !req.body.email ||
       !req.body.phone || !req.body.password) {
       err = new Error('Missing some fields. Fill All the fields');
+      return next(err);
     }
-    return next(err);
+    next();
   },
 
   createHash: function createHashfn(req, res, next){

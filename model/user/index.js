@@ -27,14 +27,14 @@ var um = {
 
           //add new user
           var newuser = {
-            email: data.email,
-            firstname: data.firstName,
-            lastname: data.lastName,
-            status: 1,
-            phone: data.phone,
-            password: hash,
-            token : data.token,
-            created_at: new Date()
+            email      : data.email,
+            firstname  : data.firstName,
+            lastname   : data.lastName,
+            status     : 1,
+            phone      : data.phone,
+            password   : hash,
+            token      : data.token,
+            created_at : new Date()
           };
 
           var query = um.table.insert(newuser);
@@ -67,8 +67,8 @@ var um = {
   },
 
   fetch: function fetchfn(keys, options, cb) {
-    var tbl = um.table;
-    var query = tbl.select(options.selectFields);
+    var tbl     = um.table;
+    var query   = tbl.select(options.selectFields);
     var filters = [];
 
     Object.keys(keys).forEach(function (key) {
@@ -162,7 +162,7 @@ if (require.main === module) {
 
     var data = {
       // id: 6,
-       email: 'get2shikhadubey@gmail.com',
+       email: 'abcd@gmail.com',
       // status: '0',
       //   phone: '9909496511',
       //   firstname: 'kk',
