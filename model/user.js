@@ -2,7 +2,7 @@
 
 var bcrypt = require('bcrypt');
 
-var db = require('../db');
+var db = require('./db');
 
 var um = {
 

@@ -5,7 +5,7 @@ var mysequel = require('mysequel');
 
 var config = {
     user: 'root',
-    password: 'mysql123',
+    password: 'paytm@197',//'mysql123',
     host: 'localhost',
     database: 'mktplace'
 };

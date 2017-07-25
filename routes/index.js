@@ -33,13 +33,6 @@ module.exports = function (app) {
 
 };
 
-
-// basic ops for any api;
-//data collection
-//data validation
-//business logic check
-//respond
-
 // http://localhost:3000/reset-password/skdhfksdflsl,mxnc9ueljksdjflkdsjflds
 //
 // reset hash - (generate uuid.v4())
