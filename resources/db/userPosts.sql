@@ -7,5 +7,8 @@ CREATE TABLE `userPosts` (
   `comment` 									varchar(255) DEFAULT NULL,
   `created_at` 									timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` 									timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniquePosts` (`email`,`status`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;

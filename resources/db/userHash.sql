@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `userHash`;
 
 CREATE TABLE `userHash` (
-  `id` int(12)        unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12)        						unsigned NOT NULL AUTO_INCREMENT,
   `email`                       			varchar(255) NOT NULL,
   `hash` 									varchar(90) NOT NULL,
   `created_at` 								timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

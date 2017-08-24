@@ -11,6 +11,14 @@ CREATE TABLE `users` (
   `updated_at`                                  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `password`                                    varchar(90) DEFAULT NULL,
   `username`                                    varchar(30) DEFAULT NULL,
+  `is_active`                                   boolean NOT NULL DEFAULT 1,
+  `is_reported`                                 boolean NOT NULL DEFAULT 0,
+  `is_blocked`                                  boolean NOT NULL DEFAULT 0,
   `token`                                       varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+
+  PRIMARY KEY (`id`),
+
+  INDEX `idx_username` (`username`)
+
+
 ) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
