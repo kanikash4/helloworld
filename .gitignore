@@ -12,7 +12,10 @@ pids
 logs
 results
 
+build
 npm-debug.log
+ncp-debug.log
+npm-debug*
 node_modules
 release
 
@@ -25,6 +28,9 @@ release
 .LSOverride
 Icon
 
+nohup.out
+coverage
+dump.rdb
 
 # Thumbnails
 ._*
