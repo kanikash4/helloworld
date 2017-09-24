@@ -16,8 +16,16 @@ var render = {
 
     resetPasswordPage: function resetPasswordPagefn(req, res, next) {
 	    res.render('reset-password');
+	},
+
+	gallery: function galleryfn(req, res, next) {
+		res.render('gallery');
+	},
+
+	profilePicGallery: function(req, res, next) {
+		res.render('profilePicGallery');
 	}
 
 };
 
-module.exports= render;
+module.exports = render;

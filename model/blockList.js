@@ -1,9 +1,9 @@
 'use strict';
 
-var 
+var
   util    = require('util'),
   _       = require('lodash'),
-  async   = require('async'),  
+  async   = require('async'),
   db      = require('./db');
 
 var blockList = {};

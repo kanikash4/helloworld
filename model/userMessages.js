@@ -1,9 +1,9 @@
 'use strict';
 
-var 
+var
   util    = require('util'),
   _       = require('lodash'),
-  async   = require('async'),  
+  async   = require('async'),
   db      = require('./db');
 
 var userMessages = {};
@@ -13,7 +13,7 @@ userMessages.table = db.define({
   columns   : ['id', 'user_id', 'message', 'message_type', 'attachment_url', 'deleted_at', 'created_at', 'updated_at']
 });
 
-userMessages.fetchMessages         = _fetchMessages; 
+userMessages.fetchMessages         = _fetchMessages;
 userMessages.insertIfNotExists     = _insertIfNotExists;
 userMessages.deleteMessage         = _deleteMessage;
 

@@ -2,8 +2,10 @@
 
 module.exports = {
   blockList 			: require('./blockList'),
-  hash 					: require('./hash'),
-  post 					: require('./post'),
-  user 					: require('./user'),
-  userMessages 			: require('./userMessages')
+  gallery  				: require('./gallery'),
+  hash 						: require('./hash'),
+  post 						: require('./post'),
+  user 						: require('./user'),
+  userFollowers 	: require('./userFollowers'),
+  userMessages 		: require('./userMessages')
 };

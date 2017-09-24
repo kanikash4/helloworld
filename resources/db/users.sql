@@ -14,6 +14,7 @@ CREATE TABLE `users` (
   `is_active`                                   boolean NOT NULL DEFAULT 1,
   `is_reported`                                 boolean NOT NULL DEFAULT 0,
   `is_blocked`                                  boolean NOT NULL DEFAULT 0,
+  `LastLogin`                                   datetime,
   `token`                                       varchar(100) NOT NULL,
 
   PRIMARY KEY (`id`),

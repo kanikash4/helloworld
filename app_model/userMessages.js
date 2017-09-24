@@ -1,9 +1,7 @@
 'use strict';
 
-var 
-  pUtils      = require('../lib/putils');
-
 var
+  pUtils      = require('../lib/putils'),
   dbModel     = require('../model'),
   wLog        = require('../lib/logger'),
   ApiError    = require('./../lib').apierror,
@@ -15,6 +13,5 @@ var _lastMsgs = function(limit, cb) {
 };
 
 module.exports = {
-
 	lastMsgs  : _lastMsgs
 };

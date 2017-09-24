@@ -12,7 +12,7 @@ var db = require('./db');
 var hm = {
             table       : db.define({
             name        : 'userHash',
-            columns     :['id','email','hash','status', 'created_at', 'updated_at']
+            columns     : ['id','email','hash','status', 'created_at', 'updated_at']
           }),
 
 

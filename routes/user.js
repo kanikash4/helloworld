@@ -8,9 +8,6 @@ var hm = require('../model').hash;
 var mailer = require('../lib/mailer');
 
 var user = {
-  loginPage: function loginPagefn(req, res, next) {
-    res.render('login');
-  },
 
   validateLogin: function validateLoginfn(req, res, next) {
     // check for mandatory params;
@@ -41,12 +38,7 @@ var user = {
           welcomeDashMsg: "Welcome to Dashboard"
         });
       } else {
-        //res.locals.message = 'Authentication failed';
-        console.log("login failed");
-        //req.session.error = 'Access denied!';
-        res.render('login', {
-          logFailMessage: 'Login failed'
-        });
+        res.render('login', {logFailMessage: 'Login failed'});
       }
     }
   },
@@ -56,10 +48,6 @@ var user = {
       return res.status(401).send();
     }
     res.render('dashboard');
-  },
-
-  signupPage: function signupPagefn(req, res, next) {
-    res.render('signup');
   },
 
   validateSignup: function validateSignupfn(req, res, next) {
@@ -143,40 +131,38 @@ var user = {
           req.headers.host + '/emailVerify?token=' + req.body.crypto + ' "> Verify Email </a>'
       };
 
-    mailer.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return console.log(error);
-      } else {
-        res.render('signup', {
-          signupMessage: 'You have successfully regisered. Kindly check the email to verify '
-        });
-      }
-    });
-  }
-  else
-  {
-    console.log("sending mail for reset password with hash generated");
-    mailOptions = {
-      from: 'Reset Password <get2shikhakaushik@gmail.com>',
-      to: req.body.email,
-      subject: 'Reset Password Process',
-      text: 'Reset Password',
-      html: '<b>Hello </b>' + 
-        '<br> Please click on the link to reset your password <br> <a href="http://' +
-        req.headers.host + '/emailVerify?token=' + req.body.crypto + ' "> Reset Password </a>'
-    };
-    console.log(req.body.crypto);
-    mailer.sendMail(mailOptions, function (error, info) {
-      if (error) {
-       console.log(error);
-      } else {
-        res.render('forgot-password', {
-          resetMsg: 'Attempt successful... Kindly check the email to verify '
-        });
-      }
-      return next();
-    });
-  }
+      mailer.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return console.log(error);
+        } else {
+          res.render('signup', {
+            signupMessage: 'You have successfully regisered. Kindly check the email to verify '
+          });
+        }
+      });
+    } else {
+      console.log("sending mail for reset password with hash generated");
+      mailOptions = {
+        from: 'Reset Password <get2shikhakaushik@gmail.com>',
+        to: req.body.email,
+        subject: 'Reset Password Process',
+        text: 'Reset Password',
+        html: '<b>Hello </b>' + 
+          '<br> Please click on the link to reset your password <br> <a href="http://' +
+          req.headers.host + '/emailVerify?token=' + req.body.crypto + ' "> Reset Password </a>'
+      };
+      console.log(req.body.crypto);
+      mailer.sendMail(mailOptions, function (error, info) {
+        if (error) {
+         console.log(error);
+        } else {
+          res.render('forgot-password', {
+            resetMsg: 'Attempt successful... Kindly check the email to verify '
+          });
+        }
+        return next();
+      });
+    }
   },
 
   emailVerify: function emailVerifyfn(req, res, next) {
@@ -200,10 +186,6 @@ var user = {
        res.render('login', {logFailMessage: 'Email Verification failed'});
      }
    });
-  },
-
-  forgotPasswordPage: function forgotPasswordPagefn(req, res, next) {
-    res.render('forgot-password');
   },
 
   validateResetRequest: function validateResetRequestfn(req, res, next) {
@@ -248,18 +230,18 @@ var user = {
     console.log("send reset mail fn.....");
      next();
   },
+
   validateHash: function validateHashfn(err, req, res, next) {
      //every new hash will invalidate old hash
      console.log("validating the hash");
      next();
   },
-  resetPasswordPage: function resetPasswordPagefn(req, res, next) {
-    res.render('reset-password');
-  },
+
   validateResetPassword: function validateResetPasswordfn(req, res, next, err) {
     if (!req.body.password || req.body.confirm)
       return next(err);
   },
+
   resetPassword: function resetPasswordfn(req, res, next) {
     //if(!req.session.reset)
     // return next(err);
@@ -301,7 +283,7 @@ var user = {
 
   imageUpload: function imageUploadfn(req, res){
     console.log("uploading image");
-    console.log(req)
+    console.log(req);
     var tempPath   = req.files.file.path,
         targetPath = path.resolve('../uploads/image.png');
     if (path.extname(req.files.file.name).toLowerCase() === '.png') {
@@ -310,7 +292,7 @@ var user = {
             console.log("Upload completed!");
         });
     } else {
-        fs.unlink(tempPath, function () {
+        fs.unlink(tempPath, function (err, resp) {
             if (err) throw err;
             console.error("Only .png files are allowed!");
         });
