@@ -141,6 +141,11 @@ var um = {
 
       bcrypt.compare(data.password, dbUser.password, cb);
     });
+  },
+
+  disableUser: function disableUser(data, cb) {
+    //TODO: implement more checks before deactivate
+    um.table.update({status:0}).where(m.table.email.equals(data.email)).exec(cb);
   }
 };
 
@@ -155,10 +160,8 @@ module.exports = um;
 
 ////self test
 
-
 if (require.main === module) {
   (function () {
-
 
     var data = {
       // id: 6,
@@ -175,7 +178,6 @@ if (require.main === module) {
     // um.create(data, function (err, res) {
     //   console.log(err || res);
     // });
-
 
     var keys = {
       id: 1

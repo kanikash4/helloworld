@@ -10,9 +10,9 @@ var expiryTime = 86400;
 
 var db = require('./db');
 var hm = {
-            table       :db.define({
+            table       : db.define({
             name        : 'userHash',
-            columns     :['id','email','hash','status', 'created_at', 'updated_at']
+            columns     : ['id','email','hash','status', 'created_at', 'updated_at']
           }),
 
 

@@ -1,8 +1,11 @@
 'use strict';
 
 module.exports = {
-  user 			: require('./user'),
-  hash 			: require('./hash'),
-  post 			: require('./post'),
-  messages 		: require('./messages')
+  blockList 			: require('./blockList'),
+  gallery  				: require('./gallery'),
+  hash 						: require('./hash'),
+  post 						: require('./post'),
+  user 						: require('./user'),
+  userFollowers 	: require('./userFollowers'),
+  userMessages 		: require('./userMessages')
 };

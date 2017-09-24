@@ -64,6 +64,24 @@ app.use(function (err, req, res, next) {
   });
 });
 
+/**
+ *redis configuration
+ */
+
+var RedisStore = require('connect-redis')(session);
+var session = session({
+  key: 'ff.sid',
+  store: new RedisStore({
+    host: 'localhost',
+    port: 6379,
+    ttl: 2 * 24 * 60 * 60 //in secs
+  }),
+  resave: false,
+  saveUninitialized: false,
+  secret: '1a2b3c4d5e6f'
+});
+app.use(session);
+
 
 /**
  * Get port from environment and store in Express.
