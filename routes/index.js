@@ -51,6 +51,8 @@ module.exports = function (app) {
 
   // app.post('/deletePosts', error);
 
+  app.get('/chat', render.chatPage);
+
   app.post('deactivateAccount', error);
 
 };
