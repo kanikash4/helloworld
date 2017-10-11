@@ -24,6 +24,10 @@ var render = {
 
 	profilePicGallery: function(req, res, next) {
 		res.render('profilePicGallery');
+	},
+
+	chatPage: function(req, res, next) {
+		res.render('chatPage');
 	}
 
 };
