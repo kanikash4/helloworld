@@ -98,11 +98,33 @@ var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
+ * Socket.io integration
+ * commenting 'server.listen(port);' and replacing with io
  */
 
-server.listen(port);
+// server.listen(port);
+
+var io = require('socket.io').listen(server.listen(port));
+
+//Above, we passed the ExpressJS server to Socket.io. In effect, our real time communication will still happen on the same port.
+
 server.on('error', onError);
 server.on('listening', onListening);
+
+
+/**
+ *  Socket.io application connection handler
+ */
+
+io.sockets.on('connection', function (socket) {
+    socket.emit('message', { message: 'welcome to the chat' });
+    socket.on('send', function (data) {
+        io.sockets.emit('message', data);
+    });
+});
+
+
+
 
 /**
  * Normalize a port into a number, string, or false.
