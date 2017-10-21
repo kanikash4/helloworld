@@ -3,22 +3,25 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
 
   body
-
-    span(style='color:blue') #{welcomeDashMsg}
-    br
-    img(src="" width="100" height="120")
-    form(action="/logout" method="post" name="logging-out")
-        input(type="submit" value="Logout" name="logout")
-    br
-    form(name="image-upload" action="/public/images" method="post" enctype="multipart/form-data" style='float:right')
-        Select an image to upload:
-        input(type="file" name="image")
-        input(type="submit" value="Upload")
-
-    br
-    br
-    form(name="post-comment" action="" method="post" style='vertical-align: middle')
-        input(type="textarea" name="comments" required="required")
+    #header
+        
+    #mainBody
+        span(style='color:blue') #{welcomeDashMsg}
         br
-        input(type="submit" value="Post")
+        img(src="" width="100" height="120")
+        form(action="/logout" method="post" name="logging-out")
+            input(type="submit" value="Logout" name="logout")
+        br
+        form(name="image-upload" action="/public/images" method="post" enctype="multipart/form-data" style='float:right')
+            Select an image to upload:
+            input(type="file" name="image")
+            input(type="submit" value="Upload")
+
+        br
+        br
+        form(name="post-comment" action="" method="post" style='vertical-align: middle')
+            input(type="textarea" name="comments" required="required")
+            br
+            input(type="submit" value="Post")
+    #footer
       
