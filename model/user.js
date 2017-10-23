@@ -40,12 +40,9 @@ var um = {
           var query = um.table.insert(newuser);
 
           query.exec(function (err, res) {
-            console.log(err || res);
-
             if (res) {
               newuser.id = res.insertId;
             }
-
             cb(err, newuser);
           });
         });
