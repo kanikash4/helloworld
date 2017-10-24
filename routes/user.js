@@ -281,7 +281,7 @@ var user = {
     }
   },
 
-  imageUpload: function imageUploadfn(req, res){
+  imageUpload: function imageUploadfn(req, res, next){
     console.log("uploading image");
     console.log(req);
     var tempPath   = req.files.file.path,
