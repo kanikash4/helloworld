@@ -53,7 +53,7 @@ module.exports = function (app) {
 
   app.get('/chat', render.chatPage);
 
-  app.post('deactivateAccount', error);
+  app.post('/deactivateAccount', error);
 
 };
 
