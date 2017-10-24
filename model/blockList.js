@@ -21,7 +21,7 @@ function _insertIfNotExists(data, cb) {
     if (err_conn) return cb(err_conn);
     connection.query(
       // INSERT IGNORE will just cause a warning (instead of error)
-      'INSERT INTO blockList (user_id, participant_id) VALUES (?,?)', [data.merchant_id,data.group_name, data.group_id],
+      'INSERT INTO blockList (user_id, participant_id) VALUES (?,?)', [data.user_id,data.participant_id],
       function (err, okPacket) {
         connection.release();
         if (err) {
