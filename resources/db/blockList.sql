@@ -5,6 +5,7 @@ CREATE TABLE `blockList` (
   `user_id`										int(12) unsigned NOT NULL,
   `participant_id`						int(12) unsigned NOT NULL,
   `created_at` 								timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status`										tinyint(1) unsigned NOT NULL DEFAULT '1',
   `updated_at` 								timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`id`),
