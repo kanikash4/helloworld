@@ -1,8 +1,5 @@
 'use strict';
 
-
-
-
 var gallery = {
 
 	getImages: function getImages(req, res, next) {
