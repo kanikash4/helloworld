@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "babel": "babel main.js",
-    "start": "webpack --config webpack.config.js && node app"
+    "start": "webpack --config webpack.config.js && node app",
+    "build": "webpack --config webpack.config.js"
   },
   "apidoc": {
     "title": "Social Networking website Learning with Node.js",
