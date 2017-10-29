@@ -11,6 +11,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session =require('express-session');
 var nodemailer = require('nodemailer');
+var webpack = require('webpack');
+var webpackDevMiddleware = require('webpack-dev-middleware');
+var webpackHotMiddleware = require('webpack-hot-middleware');
 
 var app = express();
 
@@ -28,7 +31,15 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(session({secret:"secretapisecret", resave:false, saveUninitialized:true}));
-app.use(express.static(path.join(__dirname, 'public')));
+const compiler = webpack(require('./webpack.config'));
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: '/'
+}));
+app.use(webpackHotMiddleware(compiler, {
+    path: '/__webpack_hmr'
+}));
+app.use(express.static(path.join(__dirname, 'build')));
 
 require('./routes')(app);
 
