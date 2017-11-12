@@ -2,8 +2,8 @@ import React from 'react';
 import './login.scss';
 import {Link, Redirect} from 'react-router-dom';
 import 'whatwg-fetch';
-// import {postData} from '../utils/fetch';
-// import {login as loginURL} from '../utils/urls';
+import {postData} from '../../util/fetch';
+import {login as loginURL} from '../../util/urls';
 
 
 class Login extends React.Component {
@@ -20,6 +20,12 @@ class Login extends React.Component {
     }
 
     proceedToLogin() {
+        let {userID, password, staySignedIn} = this.state;
+        postData('POST', loginURL, {userID, password, staySignedIn}, (resp) => {
+            console.log('Success', resp);
+        }, (error) => {
+            console.log('Failure', error);
+        });
         // On success of login isUserLoggedIn state will be set as true
         this.setState({isUserLoggedIn: true});
         window.localStorage.isUserLoggedIn = true;
