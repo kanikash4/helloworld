@@ -40,7 +40,7 @@ class Login extends React.Component {
     render() {
         return (
             // <div>This is the login screen</div>
-            <div classname='supercontainer'>
+            <div className='supercontainer'>
             	<div className='logoContainer'>
               </div>
               <div className='loginContainer'>
