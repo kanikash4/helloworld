@@ -79,6 +79,14 @@
   text-align: center;
 }
 
+.loginBtn {
+  margin-left: 5px;
+  border: 1px solid darkred;
+}
+.loginBtn:hover {
+    background-color: black; /*#4CAF50;*/ /* Green */
+    color: white;
+}
 
 
 .userID {

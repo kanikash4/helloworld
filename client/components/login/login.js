@@ -51,7 +51,7 @@ class Login extends React.Component {
                       onChange={this.onInputChange} placeholder='Password'
                   />
 
-                  <button onClick={this.proceedToLogin} value={this.state.staySignedIn}>Sign In</button>
+                  <button className="loginBtn" onClick={this.proceedToLogin} value={this.state.staySignedIn}>Sign In</button>
 
               </div>
             </div>
