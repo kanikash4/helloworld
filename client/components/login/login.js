@@ -53,7 +53,7 @@ class Login extends React.Component {
 
                   <button className="loginBtn" onClick={this.proceedToLogin} value={this.state.staySignedIn}>Sign In</button>
                     <div className="forgetPassword">
-                        <a href ="#">Forgot Password ?</a>
+                        <a href ="#">Forgot Password?</a>
                     </div>
               </div>
             </div>
