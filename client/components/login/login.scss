@@ -7,50 +7,54 @@
   padding: 0px;
   transform: translate(-50%, -50%);
   background-color: red;
+  height: 100%;
+  width:100%;
 }
 
-.loginContainer {
-  margin-right: 25px;
-  float: right;
-  .login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    input {
-      height: 60px;
-      border: 1px solid;
-      border-radius: 10px;
-      width: 387px;
-      font-size: 20px;
-      text-align: center;
-      outline: none;
+  .loginContainer {
+    margin-right: 25px;
+    height:15%;
+    float: right;
+    .login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      input {
+        height: 60px;
+        border: 1px solid;
+        border-radius: 10px;
+        width: 387px;
+        font-size: 20px;
+        text-align: center;
+        outline: none;
+      }
+      input::-webkit-input-placeholder {
+        color: #e0e0e0;
+      }
+      button {
+        height: 57px;
+        width: 151px;
+        border: none;
+        background-color: #06b4e3;
+        border-radius: 7px;
+        padding: 10px 15px;
+        outline: none;
+        cursor: pointer;
+        color: white;
+        font-weight: 700;
+        font-size: 25px;
+      }
     }
-    input::-webkit-input-placeholder {
-      color: #e0e0e0;
-    }
-    button {
-      height: 57px;
-      width: 151px;
-      border: none;
-      background-color: #06b4e3;
-      border-radius: 7px;
-      padding: 10px 15px;
-      outline: none;
-      cursor: pointer;
-      color: white;
-      font-weight: 700;
-      font-size: 25px;
+    .forgetPassword {
+      margin-top: 12px;
+      font-size: 13px;
     }
   }
-  .forgetPassword {
-    margin-top: 12px;
-    font-size: 13px;
-  }
-}
 
 .logoContainer {
     width: 100%;
     height: 100%;
+    background: url(../../../public/images/Logo.png) no-repeat top left;
 }
 
 .newUser {
@@ -109,3 +113,10 @@
     border-radius: 7px;
   }
 }
+.signUpContainer {
+  background-color: red;
+    height: 80%;
+}
+
+
+
