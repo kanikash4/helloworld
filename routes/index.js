@@ -5,6 +5,7 @@ var user = require('./user');
 var error = require('./error');
 var render = require('./render');
 var userMessage = require('./users').message;
+var userAccount = require('./users/account');
 
 module.exports = function (app) {
   app.get('/', home.index);
@@ -53,7 +54,7 @@ module.exports = function (app) {
 
   app.get('/chat', render.chatPage);
 
-  app.post('/deactivateAccount', error);
+  app.post('/deactivateAccount', userAccount.deactivate, error);
 
 };
 
