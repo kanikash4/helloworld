@@ -5,7 +5,7 @@ import 'whatwg-fetch';
 import {postData} from '../../util/fetch';
 import {login as loginURL} from '../../util/urls';
 import {forgotPassword as forgotPasswordURL} from '../../util/urls';
-
+import {signup as lsignupURL} from '../../util/urls';
 
 class Login extends React.Component {
     constructor() {
@@ -43,6 +43,7 @@ class Login extends React.Component {
     handleSubmit(event){
         event.preventDefault();
         alert('it works!');
+        // action="/signup"
     }
 
     render() {
@@ -70,11 +71,11 @@ class Login extends React.Component {
                     <br/>
                     <div className="signUpContainer">
                         <form onSubmit={this.handleSubmit}>
-                            <input type="text" name="firstName"/>
-                            <input type="text" name="lastName"/>
-                            <input type="text" name="phNumber"/>
-                            <input type="password" name="pass"/>
-                            <input type="text" name="email"/>
+                            <input type="text" name="firstName" placeholder='First Name'/>
+                            <input type="text" name="lastName" placeholder='Last Name'/>
+                            <input type="text" name="phNumber" placeholder='Phone Number'/>
+                            <input type="text" name="email" placeholder='Email ID'/>
+                            <input type="password" name="pass" placeholder='Password'/>
                             <button>Register</button>
                         </form>
                     </div>
